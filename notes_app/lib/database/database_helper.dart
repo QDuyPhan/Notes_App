@@ -33,18 +33,16 @@ class DatabaseHelper {
   Future<NotesModel> gettAllNotes() async {
     List<Map> maps = await _database.query(TABLE_NOTE);
     NotesModel notes = NotesModel();
-    maps.forEach(
-      (element) => {
-        notes.saveNote(
-          NoteModel(
-            id: element[COLUMN_ID],
-            noteTitle: element[COLUMN_TITLE],
-            noteContent: element[COLUMN_CONTENT],
-            noteLabel: element[COLUMN_LABEL],
-          ),
+    maps.forEach((element) {
+      notes.saveNote(
+        NoteModel(
+          id: element[COLUMN_ID],
+          noteTitle: element[COLUMN_TITLE],
+          noteContent: element[COLUMN_CONTENT],
+          noteLabel: element[COLUMN_LABEL],
         ),
-      },
-    );
+      );
+    });
     print('Notes in database: $maps');
     return notes;
   }

@@ -12,7 +12,6 @@ class NotesModel {
     _notes.remove(toRemove);
   }
 
-
   void saveNote(NoteModel note, [int? editIndex]) {
     if (editIndex != null) {
       // The note is being edited and not created.
@@ -25,11 +24,6 @@ class NotesModel {
   }
 
   List<int> searchNotes(String searchQuery) {
-    /// Search for notes based on the contents/titles of the notes.
-    /// Since the whole rendering of note on NoteScreen is dependant upon
-    /// the index of the note, this method will return a list of indexes
-    /// of the relevant notes. Empty List if no match found.
-
     List<int> relevantIndexes = [];
     _notes.asMap().forEach((index, note) {
       if (note.noteTitle!.contains(searchQuery) ||
