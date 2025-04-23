@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:notes_app/app_state/app_state.dart';
+import 'package:notes_app/screens/note_screen.dart';
+import 'package:notes_app/ultils/constants.dart';
+import 'package:notes_app/widgets/home_nav_drawer.dart';
+import 'package:notes_app/widgets/note_box.dart';
+import 'package:provider/provider.dart';
 
 import '../widgets/floating_search_bar.dart';
 
@@ -11,11 +17,16 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
       floatingActionButton: FloatingActionButton(
+        backgroundColor: BLUE_COLOR,
+        onPressed: () {
+          Navigator.of(
+            context,
+          ).push(MaterialPageRoute(builder: (context) => NoteScreen()));
+        },
         child: Icon(Icons.add),
-        onPressed: () {},
       ),
+      drawer: HomeNavDrawer(),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,29 +46,67 @@ class HomeScreen extends StatelessWidget {
             Expanded(
               child: Container(
                 color: Colors.white60,
-                child: Center(
-                  child: StaggeredGrid.count(
-                    crossAxisCount: 4,
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 12,
-                    children: [
-                      StaggeredGridTile.count(
-                        crossAxisCellCount: 2,
-                        mainAxisCellCount: 1,
-                        child: Title(color: Colors.red, child: Text("Heelo")),
-                      ),
-                      StaggeredGridTile.count(
-                        crossAxisCellCount: 2,
-                        mainAxisCellCount: 1,
-                        child: Title(
-                          title: "COlor",
-                          color: Colors.red,
-                          child: Text("Heelo"),
+                child:
+                    Provider.of<AppState>(context).notesModel.notesCount != 0
+                        ? Consumer<AppState>(
+                          builder: (context, appState, child) {
+                            return AlignedGridView.count(
+                              crossAxisCount: 4,
+                              mainAxisSpacing: 12,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 14,
+                                vertical: 8,
+                              ),
+                              crossAxisSpacing: 12,
+                              itemCount: appState.notesModel.notesCount,
+                              physics: BouncingScrollPhysics(),
+                              itemBuilder:
+                                  (context, index) => Hero(
+                                    tag: 'note_box_$index',
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder:
+                                                (builder) => NoteScreen(
+                                                  noteIndex: index,
+                                                ),
+                                          ),
+                                        );
+                                      },
+                                      child: NoteBox(
+                                        title:
+                                            (appState.notesModel
+                                                        .getNote(index)
+                                                        .noteTitle !=
+                                                    null)
+                                                ? appState.notesModel
+                                                    .getNote(index)
+                                                    .noteTitle
+                                                : "Note",
+                                        text:
+                                            appState.notesModel
+                                                .getNote(index)
+                                                .noteContent,
+                                        labelColor:
+                                            LABEL_COLOR[appState.notesModel
+                                                .getNote(index)
+                                                .noteLabel],
+                                      ),
+                                    ),
+                                  ),
+                            );
+                          },
+                        )
+                        : Center(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 50),
+                            child: Text(
+                              "You have not added any notes.\n\nPlease login again if you are a returning user.",
+                              style: TextStyle(fontSize: 18),
+                            ),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
               ),
             ),
           ],

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 const SURFACE_COLOR_DARK = Color(0xFF1F1F1F);
-const PURPLE_COLOR = Color(0xFFBB86FC);
+const BLUE_COLOR = Color(0xFF007EA7);
 
 const DARK_THEME_COLOR = Color(0xFF2E2E2E);
 const LIGHT_THEME_COLOR = Color(0xFFFAFAFA);
@@ -58,7 +58,7 @@ const INPUT_FIELD_DECORATION = InputDecoration(
     borderSide: BorderSide(color: Colors.redAccent),
   ),
   focusedBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: PURPLE_COLOR),
+    borderSide: BorderSide(color: BLUE_COLOR),
     gapPadding: 4,
   ),
   focusedErrorBorder: OutlineInputBorder(

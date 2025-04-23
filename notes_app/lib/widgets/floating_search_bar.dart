@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:notes_app/app_state/app_state.dart';
-import 'package:notes_app/search_delegate/NoteSearchClass.dart';
+import 'package:notes_app/search_delegate/note_search_class.dart';
 import 'package:provider/provider.dart';
 
 import '../ultils/constants.dart';
@@ -34,7 +34,7 @@ class FloatingSearchBar extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        print("Open Drawer");
+                       _scaffoldKey.currentState!.openDrawer();
                       },
                       child: Icon(Icons.menu, size: ICON_SIZE),
                     ),
