@@ -3,6 +3,7 @@ import 'package:notes_app/app_state/app_state.dart';
 import 'package:notes_app/search_delegate/note_search_class.dart';
 import 'package:provider/provider.dart';
 
+import '../screens/online_sync_screen.dart';
 import '../ultils/constants.dart';
 
 class FloatingSearchBar extends StatelessWidget {
@@ -34,7 +35,7 @@ class FloatingSearchBar extends StatelessWidget {
                   children: [
                     GestureDetector(
                       onTap: () {
-                       _scaffoldKey.currentState!.openDrawer();
+                        _scaffoldKey.currentState?.openDrawer();
                       },
                       child: Icon(Icons.menu, size: ICON_SIZE),
                     ),
@@ -54,7 +55,13 @@ class FloatingSearchBar extends StatelessWidget {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (builder) => OnlineSyncScreen(),
+                          ),
+                        );
+                      },
                       child: Icon(Icons.cloud_upload_rounded, size: ICON_SIZE),
                     ),
                   ],

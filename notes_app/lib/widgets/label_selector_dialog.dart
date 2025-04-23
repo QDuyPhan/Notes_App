@@ -115,7 +115,7 @@ class ColoredLabelWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
-    return InkWell(
+    return GestureDetector(
       onTap: () {
         callbackFunction(labelCallbackIndex);
         Navigator.pop(context);

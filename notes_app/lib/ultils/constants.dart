@@ -33,7 +33,7 @@ const Map<int, Color> LABEL_COLOR = {
 };
 
 // Firebase
-final String DEFAUL_EMAIL = 'email@email.com';
+final String DEFAUL_EMAIL = 'email@gmail.com';
 final String TITLE_DOCUMENT_FIELD = 'title';
 final String CONTENT_DOCUMENT_FIELD = 'content';
 final String LABEL_DOCUMENT_FIELD = 'label';

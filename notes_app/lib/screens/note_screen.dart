@@ -81,6 +81,7 @@ class _NoteScreenState extends State<NoteScreen> {
               actions: [
                 IconButton(
                   onPressed: () {
+                    print("contnet ${_note.noteContent}");
                     if (_note.noteContent != "") {
                       appState.saveNote(_note, widget.noteIndex);
                       Navigator.pop(context);
@@ -137,7 +138,7 @@ class _NoteScreenState extends State<NoteScreen> {
                           ),
                           SizedBox(height: 4),
                           BottomNoteOptions(
-                            hight: height,
+                            height: height,
                             width: width,
                             note: _note,
                             deleteNoteCallback: () {
@@ -162,13 +163,13 @@ class _NoteScreenState extends State<NoteScreen> {
 class BottomNoteOptions extends StatefulWidget {
   NoteModel note;
   final Function? deleteNoteCallback;
-  final double hight;
+  final double height;
   final double width;
 
   BottomNoteOptions({
     required this.note,
     required this.deleteNoteCallback,
-    required this.hight,
+    required this.height,
     required this.width,
   });
 
@@ -185,8 +186,8 @@ class _BottomNoteOptionsState extends State<BottomNoteOptions> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: widget.hight * 0.09,
+    return SizedBox(
+      height: widget.height * 0.09,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [

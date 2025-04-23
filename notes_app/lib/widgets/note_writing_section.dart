@@ -7,15 +7,15 @@ import '../ultils/constants.dart';
 class NoteWritingSection extends StatefulWidget {
   String? startingTitle;
   String? startingContent;
-  Function? editNoteTitleCallback;
-  Function? editNoteContentCallback;
+  Function editNoteTitleCallback;
+  Function editNoteContentCallback;
 
   NoteWritingSection({
     super.key,
     this.startingTitle,
-    this.startingContent,
-    this.editNoteTitleCallback,
-    this.editNoteContentCallback,
+    required this.startingContent,
+    required this.editNoteTitleCallback,
+    required this.editNoteContentCallback,
   });
 
   @override
@@ -30,7 +30,7 @@ class _NoteWritingSectionState extends State<NoteWritingSection> {
   void initState() {
     super.initState();
     _titleController.text = widget.startingTitle ?? "";
-    _contentController.text = widget.startingContent ?? "";
+    _contentController.text = widget.startingContent!;
   }
 
   @override
