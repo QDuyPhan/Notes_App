@@ -1,16 +1,50 @@
-# notes_app
+# 📒 Note App
 
-A new Flutter project.
+A modern note-taking application built with Flutter. This app provides both offline and online note management capabilities, allowing users to create, edit, delete, and organize their notes efficiently across devices.
+---
 
-## Getting Started
+## 🚀 Features
+📝 Create, Edit & Delete Notes
+Quickly create new notes, update content or titles, and delete notes when no longer needed. Each note includes a title, content, and a label with customizable color.
 
-This project is a starting point for a Flutter application.
+☁️ **Cloud Sync with Firebase**
+- Automatically sync your notes with Firebase Firestore, enabling cross-device access and backup in real-time.
 
-A few resources to get you started if this is your first Flutter project:
+📦 **Offline Storage**
+- Powered by sqflite, your notes are stored locally for offline access and persistence, even after restarting the app.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+🔍 **Smart Search**
+- Find notes instantly by searching their titles or contents using a floating search bar.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+🎨 **Theme Switcher**
+- Toggle between light and dark themes. Preferences are saved using shared_preferences and persist across sessions.
+
+🔐 **User Authentication**
+- Sign Up: Register new accounts with email and password.
+- Login: Secure login for existing users to access their synced notes.
+- Logout: Safely log out to protect your data.
+
+## 🛠️ Tech Stack
+- **Flutter & Dart** – Main framework and language for cross-platform development
+- **Provider** – Lightweight state management solution for managing app state 
+- **Sqflite** – Local SQLite database for storing notes offline
+- **Shared Preferences** – Persistent key-value storage for user settings
+- **Firebase** – Cloud services integration for:
+  - 🔐 **Firebase Auth** – User authentication (sign up, login, logout)
+  - ☁️ **Cloud Firestore** – Realtime database for syncing notes online
+---
+
+## 📦 Installation
+
+```bash
+git clone https://github.com/QDuyPhan/Notes_App.git
+```
+
+## 📄 License
+
+This project is licensed under the [`MIT License`](LICENSE).
+
+```text
+MIT License
+Copyright (c) 2025 Phan Quang Duy
+```
