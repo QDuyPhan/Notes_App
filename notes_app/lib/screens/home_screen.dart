@@ -4,10 +4,10 @@ import 'package:notes_app/app_state/app_state.dart';
 import 'package:notes_app/screens/note_screen.dart';
 import 'package:notes_app/ultils/constants.dart';
 import 'package:notes_app/widgets/home_nav_drawer.dart';
-import 'package:notes_app/widgets/note_box.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/floating_search_bar.dart';
+import '../widgets/note_box.dart';
 
 class HomeScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -51,8 +51,8 @@ class HomeScreen extends StatelessWidget {
                     Provider.of<AppState>(context).notesModel.notesCount != 0
                         ? Consumer<AppState>(
                           builder: (context, appState, child) {
-                            return AlignedGridView.count(
-                              crossAxisCount: 4,
+                            return MasonryGridView.count(
+                              crossAxisCount: 2,
                               mainAxisSpacing: 12,
                               padding: EdgeInsets.symmetric(
                                 horizontal: 14,
@@ -64,7 +64,7 @@ class HomeScreen extends StatelessWidget {
                               itemBuilder:
                                   (context, index) => Hero(
                                     tag: 'note_box_$index',
-                                    child: InkWell(
+                                    child: GestureDetector(
                                       onTap: () {
                                         Navigator.of(context).push(
                                           MaterialPageRoute(

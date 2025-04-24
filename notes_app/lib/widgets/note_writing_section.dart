@@ -7,8 +7,8 @@ import '../ultils/constants.dart';
 class NoteWritingSection extends StatefulWidget {
   String? startingTitle;
   String? startingContent;
-  Function editNoteTitleCallback;
-  Function editNoteContentCallback;
+  void Function(String) editNoteTitleCallback;
+  void Function(String) editNoteContentCallback;
 
   NoteWritingSection({
     super.key,
@@ -34,76 +34,86 @@ class _NoteWritingSectionState extends State<NoteWritingSection> {
   }
 
   @override
+  void dispose() {
+    _titleController.dispose();
+    _contentController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Consumer<AppState>(
       builder:
-          (context, appState, child) => Container(
-            padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-            decoration: BoxDecoration(
-              border: Border.all(
-                width: 0.2,
-                color:
-                    appState.isDarkTheme ? LIGHT_THEME_COLOR : DARK_THEME_COLOR,
-              ),
-              borderRadius: BorderRadius.circular(6),
-            ),
-            child: Column(
-              children: [
-                TextField(
-                  controller: _titleController,
-                  decoration: InputDecoration(
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color:
-                            appState.isDarkTheme
-                                ? LIGHT_THEME_COLOR
-                                : DARK_THEME_COLOR,
-                      ),
-                    ),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color:
-                            appState.isDarkTheme
-                                ? LIGHT_THEME_COLOR
-                                : DARK_THEME_COLOR,
-                      ),
-                    ),
-                    border: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color:
-                            appState.isDarkTheme
-                                ? LIGHT_THEME_COLOR
-                                : DARK_THEME_COLOR,
-                      ),
-                    ),
-                    contentPadding: EdgeInsets.symmetric(
-                      vertical: 0,
-                      horizontal: 0,
-                    ),
-                    hintStyle: TextStyle(fontSize: 24),
-                    hintText: "Title",
-                  ),
-                  style: TextStyle(fontSize: 24),
-                  keyboardType: TextInputType.name,
-                  onChanged: (value) {
-                    widget.editNoteTitleCallback!(value);
-                  },
+          (context, appState, child) => Material(
+            color: Colors.transparent,
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  width: 0.2,
+                  color:
+                      appState.isDarkTheme ? LIGHT_THEME_COLOR : DARK_THEME_COLOR,
                 ),
-                Expanded(
-                  child: TextField(
-                    controller: _contentController,
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: Column(
+                children: [
+                  TextField(
+                    controller: _titleController,
                     decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: "Note",
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color:
+                              appState.isDarkTheme
+                                  ? LIGHT_THEME_COLOR
+                                  : DARK_THEME_COLOR,
+                        ),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color:
+                              appState.isDarkTheme
+                                  ? LIGHT_THEME_COLOR
+                                  : DARK_THEME_COLOR,
+                        ),
+                      ),
+                      border: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color:
+                              appState.isDarkTheme
+                                  ? LIGHT_THEME_COLOR
+                                  : DARK_THEME_COLOR,
+                        ),
+                      ),
+                      contentPadding: EdgeInsets.symmetric(
+                        vertical: 0,
+                        horizontal: 0,
+                      ),
+                      hintStyle: TextStyle(fontSize: 24),
+                      hintText: "Title",
                     ),
-                    maxLines: null,
-                    keyboardType: TextInputType.multiline,
+                    style: TextStyle(fontSize: 24),
+                    keyboardType: TextInputType.name,
                     onChanged: (value) {
-                      widget.editNoteContentCallback!(value);
+                      widget.editNoteTitleCallback(value);
                     },
                   ),
-                ),
-              ],
+                  Expanded(
+                    child: TextField(
+                      controller: _contentController,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: "Note",
+                      ),
+                      maxLines: null,
+                      keyboardType: TextInputType.multiline,
+                      onChanged: (value) {
+                        widget.editNoteContentCallback(value);
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
     );

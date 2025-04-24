@@ -30,19 +30,23 @@ class DatabaseHelper {
     );
   }
 
-  Future<NotesModel> gettAllNotes() async {
-    List<Map> maps = await _database.query(TABLE_NOTE);
+  Future<NotesModel> getAllNotes() async {
+    final db = await _database;
+    List<Map<String, dynamic>> maps = await db.query(TABLE_NOTE);
     NotesModel notes = NotesModel();
-    maps.forEach((element) {
+
+    // Sửa lỗi cú pháp forEach và ép kiểu
+    for (var element in maps) {
       notes.saveNote(
         NoteModel(
-          id: element[COLUMN_ID],
-          noteTitle: element[COLUMN_TITLE],
-          noteContent: element[COLUMN_CONTENT],
-          noteLabel: element[COLUMN_LABEL],
+          id: element[COLUMN_ID].toString(), // Đảm bảo id là String
+          noteTitle: element[COLUMN_TITLE]?.toString() ?? "",
+          noteContent: element[COLUMN_CONTENT]?.toString() ?? "",
+          noteLabel: element[COLUMN_LABEL] as int, // noteLabel là int
         ),
       );
-    });
+    }
+
     print('Notes in database: $maps');
     return notes;
   }

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../ultils/constants.dart';
 
-class LabelSelectorDialog extends StatelessWidget {
+class LabelSelectorDialog extends StatefulWidget {
   final double width;
   int selectedLabel;
-  final Function changeLabelCallback;
+  void Function(int) changeLabelCallback;
 
   LabelSelectorDialog({
     required this.width,
@@ -13,6 +13,11 @@ class LabelSelectorDialog extends StatelessWidget {
     required this.changeLabelCallback,
   });
 
+  @override
+  State<LabelSelectorDialog> createState() => _LabelSelectorDialogState();
+}
+
+class _LabelSelectorDialogState extends State<LabelSelectorDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -26,22 +31,22 @@ class LabelSelectorDialog extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ColoredLabelWidget(
-                callbackFunction: changeLabelCallback,
+                callbackFunction: widget.changeLabelCallback,
                 labelCallbackIndex: 0,
                 labelColor: LABEL_COLOR[0]!,
-                showBorder: selectedLabel == 0 ? true : false,
+                showBorder: widget.selectedLabel == 0 ? true : false,
               ),
               ColoredLabelWidget(
-                callbackFunction: changeLabelCallback,
+                callbackFunction: widget.changeLabelCallback,
                 labelCallbackIndex: 1,
                 labelColor: LABEL_COLOR[1]!,
-                showBorder: selectedLabel == 1 ? true : false,
+                showBorder: widget.selectedLabel == 1 ? true : false,
               ),
               ColoredLabelWidget(
-                callbackFunction: changeLabelCallback,
+                callbackFunction: widget.changeLabelCallback,
                 labelCallbackIndex: 2,
                 labelColor: LABEL_COLOR[2]!,
-                showBorder: selectedLabel == 2 ? true : false,
+                showBorder: widget.selectedLabel == 2 ? true : false,
               ),
             ],
           ),
@@ -50,22 +55,22 @@ class LabelSelectorDialog extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ColoredLabelWidget(
-                callbackFunction: changeLabelCallback,
+                callbackFunction: widget.changeLabelCallback,
                 labelCallbackIndex: 3,
                 labelColor: LABEL_COLOR[3]!,
-                showBorder: selectedLabel == 3 ? true : false,
+                showBorder: widget.selectedLabel == 3 ? true : false,
               ),
               ColoredLabelWidget(
-                callbackFunction: changeLabelCallback,
+                callbackFunction: widget.changeLabelCallback,
                 labelCallbackIndex: 4,
                 labelColor: LABEL_COLOR[4]!,
-                showBorder: selectedLabel == 4 ? true : false,
+                showBorder: widget.selectedLabel == 4 ? true : false,
               ),
               ColoredLabelWidget(
-                callbackFunction: changeLabelCallback,
+                callbackFunction: widget.changeLabelCallback,
                 labelCallbackIndex: 5,
                 labelColor: LABEL_COLOR[5]!,
-                showBorder: selectedLabel == 5 ? true : false,
+                showBorder: widget.selectedLabel == 5 ? true : false,
               ),
             ],
           ),
@@ -74,22 +79,22 @@ class LabelSelectorDialog extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ColoredLabelWidget(
-                callbackFunction: changeLabelCallback,
+                callbackFunction: widget.changeLabelCallback,
                 labelCallbackIndex: 6,
                 labelColor: LABEL_COLOR[6]!,
-                showBorder: selectedLabel == 6 ? true : false,
+                showBorder: widget.selectedLabel == 6 ? true : false,
               ),
               ColoredLabelWidget(
-                callbackFunction: changeLabelCallback,
+                callbackFunction: widget.changeLabelCallback,
                 labelCallbackIndex: 7,
                 labelColor: LABEL_COLOR[7]!,
-                showBorder: selectedLabel == 7 ? true : false,
+                showBorder: widget.selectedLabel == 7 ? true : false,
               ),
               ColoredLabelWidget(
-                callbackFunction: changeLabelCallback,
+                callbackFunction: widget.changeLabelCallback,
                 labelCallbackIndex: 8,
                 labelColor: LABEL_COLOR[8]!,
-                showBorder: selectedLabel == 8 ? true : false,
+                showBorder: widget.selectedLabel == 8 ? true : false,
               ),
             ],
           ),
@@ -100,12 +105,12 @@ class LabelSelectorDialog extends StatelessWidget {
 }
 
 class ColoredLabelWidget extends StatelessWidget {
-  final Function callbackFunction;
+  void Function(int) callbackFunction;
   final Color labelColor;
   final int labelCallbackIndex;
   final bool showBorder;
 
-  const ColoredLabelWidget({
+  ColoredLabelWidget({
     required this.callbackFunction,
     required this.labelColor,
     required this.labelCallbackIndex,

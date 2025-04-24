@@ -1,7 +1,7 @@
 import 'package:notes_app/models/note.dart';
 
 class NotesModel {
-  List<NoteModel> _notes = [];
+  final List<NoteModel> _notes = [];
 
   int get notesCount => _notes.length;
 

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:notes_app/app_state/app_state.dart';
-import 'package:notes_app/main.dart';
 import 'package:provider/provider.dart';
+
+import '../app_state/app_state.dart';
+import '../screens/note_screen.dart';
+import '../ultils/constants.dart';
+import '../widgets/note_box.dart';
 
 class NoteSearchClass extends SearchDelegate {
   @override
@@ -41,16 +44,14 @@ class NoteSearchClass extends SearchDelegate {
     List<int> relevantIndexes = Provider.of<AppState>(
       context,
     ).notesModel.searchNotes(query);
-    if (relevantIndexes.length == 0) {
-      return Container(
-        child: Center(child: Text('No result', style: TextStyle(fontSize: 20))),
-      );
+    if (relevantIndexes.isEmpty) {
+      return Center(child: Text('No result', style: TextStyle(fontSize: 20)));
     }
 
-    return Consumer(
+    return Consumer<AppState>(
       builder: (context, appState, child) {
         return AlignedGridView.count(
-          crossAxisCount: 4,
+          crossAxisCount: 2,
           mainAxisSpacing: 12,
           crossAxisSpacing: 12,
           padding: EdgeInsets.symmetric(horizontal: 14, vertical: 8),
@@ -59,7 +60,31 @@ class NoteSearchClass extends SearchDelegate {
           itemBuilder: (context, index) {
             return Hero(
               tag: 'note_box_$index',
-              child: GestureDetector(onTap: () {}),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder:
+                          (builder) =>
+                              NoteScreen(noteIndex: relevantIndexes[index]),
+                    ),
+                  );
+                },
+                child: NoteBox(
+                  title:
+                      appState.notesModel
+                          .getNote(relevantIndexes[index])
+                          .noteTitle,
+                  text:
+                      appState.notesModel
+                          .getNote(relevantIndexes[index])
+                          .noteContent,
+                  labelColor:
+                      LABEL_COLOR[appState.notesModel
+                          .getNote(relevantIndexes[index])
+                          .noteLabel],
+                ),
+              ),
             );
           },
         );

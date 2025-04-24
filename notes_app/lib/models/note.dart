@@ -23,7 +23,7 @@ class NoteModel {
   }
 
   // DATABASE HELPERS
-  Map<String, dynamic?> toMap() {
+  Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
       COLUMN_ID: id,
       COLUMN_CONTENT: noteContent,

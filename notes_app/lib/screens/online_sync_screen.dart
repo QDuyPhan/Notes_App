@@ -125,7 +125,66 @@ class _OnlineSyncScreenState extends State<OnlineSyncScreen> {
                                       EdgeInsetsGeometry
                                     >(EdgeInsets.symmetric(vertical: 16)),
                                   ),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    if (_formKey.currentState!.validate()) {
+                                      print("Valid data entered for login.");
+                                      Provider.of<AppState>(
+                                            context,
+                                            listen: false,
+                                          )
+                                          .registerUser(
+                                            email: emailController.text,
+                                            password: passwordController.text,
+                                          )
+                                          .then((value) {
+                                            if (value == STATUS.unknownError) {
+                                              ScaffoldMessenger.of(
+                                                context,
+                                              ).showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                    "An unknown error occurred.",
+                                                  ),
+                                                ),
+                                              );
+                                            } else if (value ==
+                                                STATUS.wrong_password) {
+                                              ScaffoldMessenger.of(
+                                                context,
+                                              ).showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                    "Wrong password entered.",
+                                                  ),
+                                                ),
+                                              );
+                                            } else if (value ==
+                                                STATUS.weak_password) {
+                                              ScaffoldMessenger.of(
+                                                context,
+                                              ).showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                    "Firebase says it is a weak password.",
+                                                  ),
+                                                ),
+                                              );
+                                            } else if (value ==
+                                                STATUS.successful) {
+                                              ScaffoldMessenger.of(
+                                                context,
+                                              ).showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                    "Logged in successfully.",
+                                                  ),
+                                                ),
+                                              );
+                                              Navigator.of(context).pop();
+                                            }
+                                          });
+                                    }
+                                  },
                                   child: Text(
                                     "Sync Now",
                                     style: TextStyle(

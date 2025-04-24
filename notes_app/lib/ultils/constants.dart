@@ -72,4 +72,11 @@ const TEXT_STYLE = TextStyle(
   letterSpacing: 1.1,
 );
 
-enum STATUS { wrong_password, weak_password, successful, unknownError }
+enum STATUS {
+  wrong_password,
+  weak_password,
+  successful,
+  unknownError,
+  email_already_in_use,
+  user_not_found,
+}

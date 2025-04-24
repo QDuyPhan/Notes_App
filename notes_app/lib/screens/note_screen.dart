@@ -18,41 +18,53 @@ class NoteScreen extends StatefulWidget {
 }
 
 class _NoteScreenState extends State<NoteScreen> {
-  late NoteModel _note;
+  NoteModel? _note;
+  bool _isInitialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Khởi tạo _note trong initState với giá trị mặc định tạm thời
+    if (widget.noteIndex == null) {
+      _note = NoteModel(
+        noteContent: "",
+        noteTitle: "",
+        noteLabel: 0,
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+      );
+      _isInitialized = false;
+    }
+  }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (widget.noteIndex != null) {
-      _note = NoteModel(
-        noteTitle:
-            Provider.of<AppState>(
-              context,
-            ).notesModel.getNote(widget.noteIndex!).noteTitle,
-        noteContent:
-            Provider.of<AppState>(
-              context,
-            ).notesModel.getNote(widget.noteIndex!).noteContent,
-        noteLabel:
-            Provider.of<AppState>(
-              context,
-            ).notesModel.getNote(widget.noteIndex!).noteLabel,
-        id:
-            Provider.of<AppState>(
-              context,
-            ).notesModel.getNote(widget.noteIndex!).id,
-      );
-    } else {
-      _note = NoteModel(noteContent: "");
+    // Nếu đang chỉnh sửa ghi chú, lấy từ AppState
+    if (widget.noteIndex != null && _note == null) {
+      final appState = Provider.of<AppState>(context, listen: false);
+      final existingNote = appState.notesModel.getNote(widget.noteIndex!);
+      setState(() {
+        _note = NoteModel(
+          noteTitle: existingNote.noteTitle ?? "",
+          noteContent: existingNote.noteContent,
+          noteLabel: existingNote.noteLabel,
+          id: existingNote.id,
+        );
+        _isInitialized = false;
+      });
     }
   }
 
   void editNoteTitle(String newTitle) {
-    _note.noteTitle = newTitle;
+    setState(() {
+      _note?.noteTitle = newTitle;
+    });
   }
 
   void editNoteContent(String newContent) {
-    _note.noteContent = newContent;
+    setState(() {
+      _note?.noteContent = newContent;
+    });
   }
 
   @override
@@ -80,21 +92,6 @@ class _NoteScreenState extends State<NoteScreen> {
               ),
               actions: [
                 IconButton(
-                  onPressed: () {
-                    print("contnet ${_note.noteContent}");
-                    if (_note.noteContent != "") {
-                      appState.saveNote(_note, widget.noteIndex);
-                      Navigator.pop(context);
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            "Please enter some content for the note",
-                          ),
-                        ),
-                      );
-                    }
-                  },
                   icon: Icon(
                     Icons.check,
                     color:
@@ -102,6 +99,21 @@ class _NoteScreenState extends State<NoteScreen> {
                             ? LIGHT_THEME_COLOR
                             : DARK_THEME_COLOR,
                   ),
+                  onPressed: () {
+                    if (_note!.noteContent.trim().isNotEmpty ||
+                        _note!.noteTitle!.trim().isNotEmpty) {
+                      appState.saveNote(_note!, widget.noteIndex);
+                      Navigator.pop(context);
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            "Please enter some content or title for the note.",
+                          ),
+                        ),
+                      );
+                    }
+                  },
                 ),
               ],
             ),
@@ -129,8 +141,8 @@ class _NoteScreenState extends State<NoteScreen> {
                                 vertical: width * 0.015,
                               ),
                               child: NoteWritingSection(
-                                startingTitle: _note.noteTitle,
-                                startingContent: _note.noteContent,
+                                startingTitle: _note!.noteTitle,
+                                startingContent: _note!.noteContent,
                                 editNoteTitleCallback: editNoteTitle,
                                 editNoteContentCallback: editNoteContent,
                               ),
@@ -140,10 +152,10 @@ class _NoteScreenState extends State<NoteScreen> {
                           BottomNoteOptions(
                             height: height,
                             width: width,
-                            note: _note,
+                            note: _note!,
                             deleteNoteCallback: () {
                               if (widget.noteIndex != null) {
-                                appState.deleteNote(_note);
+                                appState.deleteNote(_note!);
                                 Navigator.pop(context);
                               }
                             },
@@ -178,11 +190,11 @@ class BottomNoteOptions extends StatefulWidget {
 }
 
 class _BottomNoteOptionsState extends State<BottomNoteOptions> {
-  void changeLabelCallback(int newLabel) {
-    setState(() {
-      widget.note.noteLabel = newLabel;
-    });
-  }
+  // void changeLabelCallback(int newLabel) {
+  //   setState(() {
+  //     widget.note.noteLabel = newLabel;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -199,7 +211,11 @@ class _BottomNoteOptionsState extends State<BottomNoteOptions> {
                     (context) => LabelSelectorDialog(
                       selectedLabel: widget.note.noteLabel,
                       width: widget.width,
-                      changeLabelCallback: changeLabelCallback,
+                      changeLabelCallback: (int newLabel) {
+                        setState(() {
+                          widget.note.noteLabel = newLabel;
+                        });
+                      },
                     ),
               );
             },
@@ -208,7 +224,7 @@ class _BottomNoteOptionsState extends State<BottomNoteOptions> {
           ),
           IconButton(
             onPressed: () {
-              this.widget.deleteNoteCallback?.call();
+              widget.deleteNoteCallback?.call();
             },
             icon: Icon(Icons.delete_outline),
             iconSize: 29,
