@@ -16,6 +16,7 @@ class _OnlineSyncScreenState extends State<OnlineSyncScreen> {
   late final SharedPreferences prefs;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  bool isLoginMode = false;
 
   @override
   Widget build(BuildContext context) {
@@ -46,12 +47,10 @@ class _OnlineSyncScreenState extends State<OnlineSyncScreen> {
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 Text(
-                                  "Go online!".toUpperCase(),
+                                  isLoginMode
+                                      ? "Login".toUpperCase()
+                                      : "Register".toUpperCase(),
                                   style: TEXT_STYLE,
-                                ),
-                                SizedBox(height: 10),
-                                Text(
-                                  'Enter an email-password combination to allow for online syncing. This will allow you to access your notes when you switch devices.',
                                 ),
                                 SizedBox(height: 25),
                                 TextFormField(
@@ -79,6 +78,7 @@ class _OnlineSyncScreenState extends State<OnlineSyncScreen> {
                                     ).hasMatch(value)) {
                                       return "This does not seem to be a valid email id";
                                     }
+                                    return null;
                                   },
                                 ),
                                 SizedBox(height: 15),
@@ -127,66 +127,98 @@ class _OnlineSyncScreenState extends State<OnlineSyncScreen> {
                                   ),
                                   onPressed: () {
                                     if (_formKey.currentState!.validate()) {
-                                      print("Valid data entered for login.");
-                                      Provider.of<AppState>(
+                                      print(
+                                        "Valid data entered for ${isLoginMode ? 'login' : 'register'}.",
+                                      );
+                                      final appState = Provider.of<AppState>(
+                                        context,
+                                        listen: false,
+                                      );
+                                      final future =
+                                          isLoginMode
+                                              ? appState.loginUser(
+                                                email: emailController.text,
+                                                password:
+                                                    passwordController.text,
+                                              )
+                                              : appState.registerUser(
+                                                email: emailController.text,
+                                                password:
+                                                    passwordController.text,
+                                              );
+
+                                      future.then((value) {
+                                        if (value == STATUS.unknownError) {
+                                          ScaffoldMessenger.of(
                                             context,
-                                            listen: false,
-                                          )
-                                          .registerUser(
-                                            email: emailController.text,
-                                            password: passwordController.text,
-                                          )
-                                          .then((value) {
-                                            if (value == STATUS.unknownError) {
-                                              ScaffoldMessenger.of(
-                                                context,
-                                              ).showSnackBar(
-                                                SnackBar(
-                                                  content: Text(
-                                                    "An unknown error occurred.",
-                                                  ),
-                                                ),
-                                              );
-                                            } else if (value ==
-                                                STATUS.wrong_password) {
-                                              ScaffoldMessenger.of(
-                                                context,
-                                              ).showSnackBar(
-                                                SnackBar(
-                                                  content: Text(
-                                                    "Wrong password entered.",
-                                                  ),
-                                                ),
-                                              );
-                                            } else if (value ==
-                                                STATUS.weak_password) {
-                                              ScaffoldMessenger.of(
-                                                context,
-                                              ).showSnackBar(
-                                                SnackBar(
-                                                  content: Text(
-                                                    "Firebase says it is a weak password.",
-                                                  ),
-                                                ),
-                                              );
-                                            } else if (value ==
-                                                STATUS.successful) {
-                                              ScaffoldMessenger.of(
-                                                context,
-                                              ).showSnackBar(
-                                                SnackBar(
-                                                  content: Text(
-                                                    "Logged in successfully.",
-                                                  ),
-                                                ),
-                                              );
-                                              Navigator.of(context).pop();
-                                            }
-                                          });
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                "An unknown error occurred.",
+                                              ),
+                                            ),
+                                          );
+                                        } else if (value ==
+                                            STATUS.wrong_password) {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                "Wrong password entered.",
+                                              ),
+                                            ),
+                                          );
+                                        } else if (value ==
+                                            STATUS.user_not_found) {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: Text("User not found."),
+                                            ),
+                                          );
+                                        } else if (value ==
+                                            STATUS.weak_password) {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                "Firebase says it is a weak password.",
+                                              ),
+                                            ),
+                                          );
+                                        } else if (value ==
+                                            STATUS.email_already_in_use) {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                "Email already in use.",
+                                              ),
+                                            ),
+                                          );
+                                        } else if (value == STATUS.successful) {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                isLoginMode
+                                                    ? "Logged in successfully."
+                                                    : "Registered successfully.",
+                                              ),
+                                            ),
+                                          );
+                                          Navigator.of(context).pop();
+                                        }
+                                      });
                                     }
                                   },
                                   child: Text(
-                                    "Sync Now",
+                                    isLoginMode ? "Login" : "Register",
                                     style: TextStyle(
                                       fontSize: 18,
                                       letterSpacing: 0.75,
@@ -194,6 +226,37 @@ class _OnlineSyncScreenState extends State<OnlineSyncScreen> {
                                   ),
                                 ),
                                 SizedBox(height: 20),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      isLoginMode
+                                          ? "Don't have an account? "
+                                          : "Already have an account? ",
+                                      style: TextStyle(
+                                        color:
+                                            appState.isDarkTheme
+                                                ? Colors.white
+                                                : Colors.black,
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          isLoginMode =
+                                              !isLoginMode; // Chuyển đổi chế độ
+                                        });
+                                      },
+                                      child: Text(
+                                        isLoginMode ? 'Register' : 'Login',
+                                        style: TextStyle(
+                                          color: BLUE_COLOR,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
                           )
@@ -215,12 +278,6 @@ class AlreadySyncingWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text("Woohoo".toUpperCase(), style: TEXT_STYLE),
-        SizedBox(height: 20),
-        Text(
-          "Looks like you are already enjoying the benefits of online sync!",
-        ),
-        SizedBox(height: 20),
         ElevatedButton(
           style: ButtonStyle(
             backgroundColor: WidgetStateProperty.all<Color>(BUTTON_COLOR),
@@ -232,7 +289,7 @@ class AlreadySyncingWidget extends StatelessWidget {
             Navigator.of(context).pop();
           },
           child: Text(
-            "Great. I want to note something now!",
+            "Try something note!",
             style: TextStyle(fontSize: 16, letterSpacing: 0.75),
           ),
         ),

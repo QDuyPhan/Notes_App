@@ -20,19 +20,6 @@ class AboutSection extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  "Developer By".toUpperCase(),
-                  style: TextStyle(
-                    fontSize: 16,
-                    letterSpacing: 1.1,
-                    fontWeight: FontWeight.w500,
-                    color:
-                        appState.isDarkTheme
-                            ? DARK_THEME_WHITE_GREY
-                            : TEXT_COLOR,
-                  ),
-                ),
-                SizedBox(height: 18),
-                Text(
                   "Phan Quang Duy",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                 ),
@@ -75,6 +62,26 @@ class AboutSection extends StatelessWidget {
                               ? DARK_THEME_WHITE_GREY
                               : TEXT_COLOR,
                       letterSpacing: 1.05,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 12),
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                    WidgetStateProperty.all<Color>(
+                      BUTTON_COLOR,
+                    ),
+                  ),
+                  onPressed: () {
+                    Provider.of<AppState>(context, listen: false).logoutUser();
+                  },
+                  child: Text(
+                    "Logout",
+                    style: TextStyle(
+                      color: appState.isDarkTheme ? Colors.white : Colors.black,
+                      fontSize: 18,
+                      letterSpacing: 0.75,
                     ),
                   ),
                 ),

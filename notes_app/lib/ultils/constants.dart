@@ -7,7 +7,7 @@ const DARK_THEME_COLOR = Color(0xFF2E2E2E);
 const LIGHT_THEME_COLOR = Color(0xFFFAFAFA);
 const NOTE_BACKGROUND_COLOR = Color(0xFF353535);
 
-const BUTTON_COLOR = Color(0xFF5C49E0);
+const BUTTON_COLOR = Color(0xFF007EA7);
 
 const TEXT_COLOR = Color(0xFF817F80);
 const DARK_THEME_WHITE_GREY = Colors.white60;
