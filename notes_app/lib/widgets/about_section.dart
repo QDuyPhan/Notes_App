@@ -32,7 +32,7 @@ class AboutSection extends StatelessWidget {
                   },
                   icon: Icon(Icons.link),
                   style: ButtonStyle(
-                    side: MaterialStateProperty.all(
+                    side: WidgetStateProperty.all(
                       BorderSide(
                         color:
                             appState.isDarkTheme
@@ -40,12 +40,12 @@ class AboutSection extends StatelessWidget {
                                 : TEXT_COLOR,
                       ),
                     ),
-                    shape: MaterialStateProperty.all(
+                    shape: WidgetStateProperty.all(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50),
                       ),
                     ),
-                    padding: MaterialStateProperty.all(
+                    padding: WidgetStateProperty.all(
                       EdgeInsets.symmetric(
                         horizontal: width * 0.1,
                         vertical: height * 0.01,
@@ -57,10 +57,7 @@ class AboutSection extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
-                      color:
-                          appState.isDarkTheme
-                              ? DARK_THEME_WHITE_GREY
-                              : TEXT_COLOR,
+                      color: appState.isDarkTheme ? Colors.white : Colors.black,
                       letterSpacing: 1.05,
                     ),
                   ),
@@ -68,9 +65,10 @@ class AboutSection extends StatelessWidget {
                 SizedBox(height: 12),
                 ElevatedButton(
                   style: ButtonStyle(
-                    backgroundColor:
-                    WidgetStateProperty.all<Color>(
-                      BUTTON_COLOR,
+                    backgroundColor: WidgetStateProperty.all<Color>(
+                      Provider.of<AppState>(context).isDarkTheme
+                          ? Colors.white
+                          : Colors.black,
                     ),
                   ),
                   onPressed: () {
@@ -79,7 +77,7 @@ class AboutSection extends StatelessWidget {
                   child: Text(
                     "Logout",
                     style: TextStyle(
-                      color: appState.isDarkTheme ? Colors.white : Colors.black,
+                      color: appState.isDarkTheme ? Colors.black : Colors.white,
                       fontSize: 18,
                       letterSpacing: 0.75,
                     ),

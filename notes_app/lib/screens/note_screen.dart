@@ -77,27 +77,20 @@ class _NoteScreenState extends State<NoteScreen> {
           (context, appState, child) => Scaffold(
             appBar: AppBar(
               leading: BackButton(
-                color:
-                    appState.isDarkTheme ? LIGHT_THEME_COLOR : DARK_THEME_COLOR,
+                color: appState.isDarkTheme ? Colors.white : Colors.black,
               ),
               elevation: 0,
               title: Text(
                 "Your Note",
                 style: TextStyle(
-                  color:
-                      appState.isDarkTheme
-                          ? LIGHT_THEME_COLOR
-                          : DARK_THEME_COLOR,
+                  color: appState.isDarkTheme ? Colors.white : Colors.black,
                 ),
               ),
               actions: [
                 IconButton(
                   icon: Icon(
                     Icons.check,
-                    color:
-                        appState.isDarkTheme
-                            ? LIGHT_THEME_COLOR
-                            : DARK_THEME_COLOR,
+                    color: appState.isDarkTheme ? Colors.white : Colors.black,
                   ),
                   onPressed: () {
                     if (_note!.noteContent.trim().isNotEmpty ||

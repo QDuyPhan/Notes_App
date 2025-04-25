@@ -119,7 +119,9 @@ class _OnlineSyncScreenState extends State<OnlineSyncScreen> {
                                   style: ButtonStyle(
                                     backgroundColor:
                                         WidgetStateProperty.all<Color>(
-                                          BUTTON_COLOR,
+                                          appState.isDarkTheme
+                                              ? Colors.white
+                                              : Colors.black,
                                         ),
                                     padding: WidgetStateProperty.all<
                                       EdgeInsetsGeometry
@@ -220,6 +222,10 @@ class _OnlineSyncScreenState extends State<OnlineSyncScreen> {
                                   child: Text(
                                     isLoginMode ? "Login" : "Register",
                                     style: TextStyle(
+                                      color:
+                                          appState.isDarkTheme
+                                              ? Colors.black
+                                              : Colors.white,
                                       fontSize: 18,
                                       letterSpacing: 0.75,
                                     ),
@@ -250,7 +256,10 @@ class _OnlineSyncScreenState extends State<OnlineSyncScreen> {
                                       child: Text(
                                         isLoginMode ? 'Register' : 'Login',
                                         style: TextStyle(
-                                          color: BLUE_COLOR,
+                                          color:
+                                              appState.isDarkTheme
+                                                  ? Colors.white
+                                                  : Colors.black,
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
@@ -280,7 +289,11 @@ class AlreadySyncingWidget extends StatelessWidget {
       children: [
         ElevatedButton(
           style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all<Color>(BUTTON_COLOR),
+            backgroundColor: WidgetStateProperty.all<Color>(
+              Provider.of<AppState>(context).isDarkTheme
+                  ? Colors.white
+                  : Colors.black,
+            ),
             padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
               EdgeInsets.symmetric(vertical: 16),
             ),
@@ -290,7 +303,14 @@ class AlreadySyncingWidget extends StatelessWidget {
           },
           child: Text(
             "Try something note!",
-            style: TextStyle(fontSize: 16, letterSpacing: 0.75),
+            style: TextStyle(
+              fontSize: 16,
+              letterSpacing: 0.75,
+              color:
+                  Provider.of<AppState>(context).isDarkTheme
+                      ? Colors.black
+                      : Colors.white,
+            ),
           ),
         ),
       ],

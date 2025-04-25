@@ -45,7 +45,26 @@ class NoteSearchClass extends SearchDelegate {
       context,
     ).notesModel.searchNotes(query);
     if (relevantIndexes.isEmpty) {
-      return Center(child: Text('No result', style: TextStyle(fontSize: 20)));
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 50),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset("assets/images/cuate.png"),
+              Text(
+                "File not found. Try searching again.",
+                style: TextStyle(
+                  color:
+                      Provider.of<AppState>(context).isDarkTheme
+                          ? Colors.white
+                          : Colors.black,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
     }
 
     return Consumer<AppState>(

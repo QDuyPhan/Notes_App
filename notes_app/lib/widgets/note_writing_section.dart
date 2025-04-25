@@ -51,8 +51,7 @@ class _NoteWritingSectionState extends State<NoteWritingSection> {
               decoration: BoxDecoration(
                 border: Border.all(
                   width: 0.2,
-                  color:
-                      appState.isDarkTheme ? LIGHT_THEME_COLOR : DARK_THEME_COLOR,
+                  color: appState.isDarkTheme ? Colors.white : Colors.black,
                 ),
                 borderRadius: BorderRadius.circular(6),
               ),
@@ -65,24 +64,24 @@ class _NoteWritingSectionState extends State<NoteWritingSection> {
                         borderSide: BorderSide(
                           color:
                               appState.isDarkTheme
-                                  ? LIGHT_THEME_COLOR
-                                  : DARK_THEME_COLOR,
+                                  ? Colors.white
+                                  : Colors.black,
                         ),
                       ),
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
                           color:
                               appState.isDarkTheme
-                                  ? LIGHT_THEME_COLOR
-                                  : DARK_THEME_COLOR,
+                                  ? Colors.white
+                                  : Colors.black,
                         ),
                       ),
                       border: UnderlineInputBorder(
                         borderSide: BorderSide(
                           color:
                               appState.isDarkTheme
-                                  ? LIGHT_THEME_COLOR
-                                  : DARK_THEME_COLOR,
+                                  ? Colors.white
+                                  : Colors.black,
                         ),
                       ),
                       contentPadding: EdgeInsets.symmetric(

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 const SURFACE_COLOR_DARK = Color(0xFF1F1F1F);
 const BLUE_COLOR = Color(0xFF007EA7);
 
-const DARK_THEME_COLOR = Color(0xFF2E2E2E);
+const DARK_THEME_COLOR = Color(0x252525);
 const LIGHT_THEME_COLOR = Color(0xFFFAFAFA);
 const NOTE_BACKGROUND_COLOR = Color(0xFF353535);
 
